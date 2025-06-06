@@ -4,7 +4,6 @@ Este repositório contém o desenvolvimento de simulações robóticas utilizand
 
 🔗 **Mais informações sobre o Genesis:**
     📖 Documentação: [Genesis Docs](https://genesis-world.readthedocs.io/en/latest/)
-    
     💻 Repositório oficial: [Genesis GitHub](https://github.com/Genesis-Embodied-AI/Genesis)
 
 ## 📌 Objetivo do Projeto
