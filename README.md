@@ -1,93 +1,62 @@
-# 🦾 dl_grasping_loco_manipulation_2025
+# dl_grasping_loco_manipulation_2025
 
-Este repositório contém o desenvolvimento de simulações robóticas utilizando a plataforma **Genesis**, uma plataforma de simulação física voltada para aplicações em **Robótica, Inteligência Artificial Incorporada e Inteligência Física**.
+Deep learning pipeline for grasping with the Boston Dynamics Spot robot. Developed at the Mobile Robotics Group, EESC (São Carlos Engineering School).
 
-🔗 **Mais informações sobre o Genesis:**
-    📖 Documentação: [Genesis Docs](https://genesis-world.readthedocs.io/en/latest/)
-    💻 Repositório oficial: [Genesis GitHub](https://github.com/Genesis-Embodied-AI/Genesis)
+The project covers simulation-based dataset generation, neural network training for grasp selection, and real robot deployment using Spot's arm and gripper camera.
 
-## 📌 Objetivo do Projeto
+- Genesis docs: [genesis-world.readthedocs.io](https://genesis-world.readthedocs.io/en/latest/)
+- Genesis repo: [Genesis GitHub](https://github.com/Genesis-Embodied-AI/Genesis)
 
-Este trabalho está sendo desenvolvido no âmbito da pesquisa do *Mobile Robotics Group* do Laboratório de Robótica da Escola de Engenharia de São Carlos (EESC), focada em *Otimização de Grasping em Robôs Quadrúpedes com braço*. O objetivo é aprimorar a manipulação locomotiva utilizando *Deep Learning*, com foco principal em implementações high-level utilizando o braço robótico acoplado no **Spot da Boston Dynamics**.
+## Repository Structure
 
-A pesquisa se inspirou no estudo abaixo:
-    📄 ["Simultaneous Multi-View Object Recognition and Grasping in Open-Ended Domains"](https://link.springer.com/article/10.1007/s10846-024-02092-5)
-
-## 🏗️ Estrutura do Repositório
-
-```text
-/
-├── urdf/                                  # Arquivos de descrição dos robôs (URDF, meshes, STEP, etc.)
-│
-├── scripts/                               # Scripts para simulações do Spot e análises
-│   ├── spot_arm/                          # Simulações de grasping com o braço do Spot
-│   ├── spot_gripper/                      # Simulações de grasping utilizando apenas o gripper do Spot
-│   │   ├── normal_grasp/                  # Exploração do alinhamento de normais com o gripper em simulação
-│   │   │   └── d2nt/                      # Validação do alinhamento de normais com mapas gerados pelo D2NT
-│
-├── dataset/                               # Scripts e notebooks para extração de amostras no Genesis
-│   ├── bottles/                           # Modelos 3D das garrafas usadas nas simulações de grasping
-│   ├── final/                             # Versão final dos notebooks otimizados para extração do dataset
-│   └── test/                              # Prototipações e testes de extração de dataset
-│
-├── grasp_selection/                       # Treinamento de modelos de redes neurais para seleção de pixels de grasping
-│   ├── model/                             # Modelos treinados salvos
-│   └── data/                              # Dados de teste utilizados nas primeiras iterações de treinamento
-│
-├── spot_deploy/                           # Scripts de deploy no Spot real, usando a SDK da Boston Dynamics
-│   ├── evaluation/                        # Scripts da pipeline final de deploy: integração entre D2NT, YOLO e Grasp_NN
-│   ├── images/                            # Dados extraídos da câmera do gripper do Spot
-│   └── tunning/                           # Scripts para depuração e ajuste fino de parâmetros do deploy
-│
-└── README.md                              # Este arquivo
+```
+├── urdf/             # Robot description files (URDF, meshes)
+├── scripts/          # Genesis simulation scripts
+│   └── spot_gripper/ # Gripper grasping experiments, including normal-aligned grasping and D2NT validation
+├── dataset/          # Dataset extraction notebooks and 3D bottle models
+├── grasp_selection/  # Grasp selection neural network training
+└── spot_deploy/      # Real robot deployment pipeline (YOLO + D2NT + GraspNN)
+    ├── evaluation/   # Full integration pipeline
+    ├── images/       # Camera data from Spot's gripper
+    └── tuning/       # Parameter tuning scripts
 ```
 
-## 🚀 Configuração do Ambiente
+## Setup
 
-Para rodar as simulações, siga os passos:
+Simulations run on [Genesis](https://genesis-world.readthedocs.io/en/latest/). See the [installation guide](https://genesis-world.readthedocs.io/en/latest/user_guide/overview/installation.html).
 
-1. **Criar um ambiente virtual**:
+Using conda:
 
-   ```bash
-   conda create -n genesis_env python=3.12
-   conda activate genesis_env
-   ```
+```bash
+conda create -n genesis_env python=3.12
+conda activate genesis_env
+pip install genesis-world
+```
 
-   ou utilizando `pyenv`:
+Using pyenv:
 
-   ```bash
-   pyenv virtualenv 3.12 genesis_env
-   pyenv activate genesis_env
-   ```
+```bash
+pyenv virtualenv 3.12 genesis_env
+pyenv activate genesis_env
+pip install genesis-world
+```
 
-2. **Instalar o Genesis**:
-   📖 Guia de instalação: [Genesis Installation](https://genesis-world.readthedocs.io/en/latest/user_guide/overview/installation.html)
+An NVIDIA GPU is recommended. Install [CUDA drivers](https://developer.nvidia.com/cuda-downloads) for better performance.
 
-   ```bash
-   pip install genesis-world
-   ```
+## Real Robot
 
-3. **Configuração para GPU (Opcional)**:
-   Caso sua máquina possua uma GPU NVIDIA, recomenda-se [configurar os drivers](https://developer.nvidia.com/cuda-downloads) para melhor desempenho.
+Deployment uses the Boston Dynamics Spot SDK:
 
-## 🤖 Desenvolvimento e Testes no Robô Real
+- [Python examples](https://github.com/boston-dynamics/spot-sdk/tree/7569b7998d486109f80de31dd5f86470016bb141/python/examples)
+- [Protobuf API](https://github.com/boston-dynamics/spot-sdk/tree/7569b7998d486109f80de31dd5f86470016bb141/protos/bosdyn/api)
 
-Além das simulações, foram realizados testes no robô Spot utilizando a **SDK e API da Boston Dynamics**:
+Normal maps on the real robot are generated using [D2NT](https://mias.group/D2NT/). In simulation, Genesis provides native tools for this.
 
-* 🔗 [Spot SDK - Exemplos em Python](https://github.com/boston-dynamics/spot-sdk/tree/7569b7998d486109f80de31dd5f86470016bb141/python/examples)
-* 🔗 [Spot API - Protobuf](https://github.com/boston-dynamics/spot-sdk/tree/7569b7998d486109f80de31dd5f86470016bb141/protos/bosdyn/api)
+## Genesis Documentation
 
-## 📸 Geração de Mapas de Normais
+- [User Guide](https://genesis-world.readthedocs.io/en/latest/user_guide/index.html)
+- [API Reference](https://genesis-world.readthedocs.io/en/latest/api_reference/index.html)
 
-Para melhorar o grasping, foram utilizados mapas de normais a partir de câmeras de profundidade. No **Genesis**, há ferramentas nativas para isso. No mundo real, utilizamos:
+## Contributing
 
-* 🔗 [D2NT - Depth to Normal Transformation](https://mias.group/D2NT/)
-
-## 📖 Documentação e APIs do Genesis
-
-* 📘️ [User Guide](https://genesis-world.readthedocs.io/en/latest/user_guide/index.html)
-* 🔧 [API Reference](https://genesis-world.readthedocs.io/en/latest/api_reference/index.html)
-
-## 🤝 Contribuições
-
-Este projeto está em desenvolvimento contínuo! Se deseja contribuir ou tem sugestões, abra uma **issue** ou envie um **pull request**. 💡🚀
+Open an issue or pull request if you have suggestions or improvements.
