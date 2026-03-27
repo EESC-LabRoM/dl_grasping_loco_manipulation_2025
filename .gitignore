@@ -192,3 +192,23 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# asset mesh files
+*.fbx
+*.stl
+*.obj
+*.blend
+*.glb
+*.mtl
+*.3dm
+*.stp
+*.npy
+*.png
+*.pt
+
+# unnecessary scripts
+./scripts/spot_arm/
+./scripts/spot_gripper/
+./scripts/z1/
+
+
